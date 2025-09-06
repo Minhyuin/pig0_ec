@@ -1,0 +1,33 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "shell",
+			"label": "build",
+			"dependsOn": [
+				"cmake"
+			],
+			"command": "ninja -C 'build' ",
+			"args": [],
+			"options": {
+				"cwd": "${workspaceFolder}"
+			},
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+			"detail": "make...",
+			"problemMatcher": []
+		},
+		{
+			"type": "shell",
+			"label": "cmake",
+			"command": " cmake -B 'build' -G 'Ninja' ",
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+			"problemMatcher": []
+		},
+	]
+}

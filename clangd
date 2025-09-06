@@ -1,0 +1,9 @@
+{
+  "Diagnostics": {
+    "UnusedIncludes": "None"
+  },
+    "InlayHints": {
+      "ParameterNames": "no",
+      "DeducedTypes": "no"
+  }
+}

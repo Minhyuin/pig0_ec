@@ -1,0 +1,103 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "showDevDebugOutput": "none",
+      "cwd": "${workspaceRoot}",
+      "executable": "./build/robot.elf",
+      "name": "DebugSTM32",
+      "request": "launch",
+      "type": "cortex-debug",
+      "servertype": "openocd",
+      "device": "stm32f407",
+      "configFiles": [
+        // "interface/stlink.cfg",
+        "interface/cmsis-dap.cfg",
+        "target/stm32f4x.cfg"
+      ],
+      "armToolchainPath": "/usr/bin/",
+      "svdFile": "STM32f407x.svd",
+      "liveWatch": {
+        "enabled": true,
+        "samplesPerSecond": 1
+      },
+      "preLaunchTask": "build",
+      "rttConfig": {
+        "enabled": true,
+        "address": "auto",
+        "decoders": [
+          {      
+            "type": "console",
+            "label": "cnt",
+            // "iencoding": "utf8",
+            "noclear": false,
+            "logfile": "${workspaceRoot}/docs/rtt_log",
+            "port":0,
+          },
+          // {      
+          //   "type": "binary",
+          //   "label": "cnt_bin",
+          //   // "encoding": "unsigned",
+          //   // "iencoding": "utf8",
+          //   "port": 1,
+          // },
+          // {      
+          //   "type": "graph",
+          //   "label": "data1",
+          //   "encoding": "float",
+          //   // "logfile": "${workspaceRoot}/data/rtt_graph_log",
+          //   "port": 0,
+          //   "graphId": "1",
+          //   "scale": 1.0,
+          // }
+
+        ]
+      },
+      // "graphConfig": [
+      //   {
+      //     "label": "Graph 1",
+      //     "timespan": 5,
+      //     "type": "realtime",
+      //     "annotate": true,
+      //     "maximum": 10,
+      //     "minimum": 5,
+      //     "plots": [
+      //       {
+      //         "graphId": "1",
+      //         "label": "data1",
+      //         "color": "#53753c"
+              
+      //       },
+      //       // {
+      //       //   "graphId": "2",
+      //       //   "label": "data2",
+      //       //   "color": "#955f20"
+      //       // }
+      //     ],
+      //   }
+      // ]
+            // "swoConfig": {
+      //   "enabled": true,
+      //   "decoders": [
+      //     {
+      //       "type": "console",
+      //       "port": 3,
+      //       // "encoding": "unsigned",
+      //       // "graphId": "1",
+      //       // "scale": 1
+      //     },
+      //     // {
+      //     //   "type": "graph",
+      //     //   "port": 0,
+      //     //   "encoding": "unsigned",
+      //     //   "graphId": "1",
+      //     //   "scale": 1
+      //     // }
+      //   ],
+      //   "cpuFrequency": 168000000,
+      //   "swoFrequency": 2000000,
+      //   "source": "probe"
+      // },
+    }
+  ]
+}
