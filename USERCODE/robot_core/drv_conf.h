@@ -47,7 +47,7 @@ extern "C" {
 #define MAIN_FREQ (10.f)      // 要用test_point结合示波器测出
 #define TIM3_IT_FREQ (10.f)   // 10hz(bus_detect定时器)
 #define TIM9_IT_FREQ (1250.f) // 1250Hz IMU特供
-#define TIM6_IT_FREQ (200.f)  // 200hz(中速定时器)
+#define TIM6_IT_FREQ (500.f)  // 200hz(中速定时器)
 #define TIM7_IT_FREQ (1000.f) // 1000hz(高速定时器)
 
 #define TIM1_IT_FREQ (25.f)

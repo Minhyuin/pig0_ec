@@ -24,8 +24,8 @@ typedef struct {
 #define SPIN_STOP_WZ_ACC 1.f
 #define SPIN_START_WZ_ACC 3.f
 
-#define MAX_VX_SPEED 1.5f
-#define MAX_VY_SPEED 1.5f
+#define MAX_VX_SPEED 3.0f
+#define MAX_VY_SPEED 3.0f
 #define MAX_WZ_RADPS 4.0f
 
 #define MAX_RUSH_VX_SPEED 3.5f

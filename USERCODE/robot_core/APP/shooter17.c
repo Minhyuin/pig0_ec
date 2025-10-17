@@ -311,7 +311,7 @@ HAL_StatusTypeDef shooter17_ctrl_loop(float dt, robot_t *robot) {
                                         delta_dial_ang, one_shoot_ang);
   else {
     dial_tff = anti_stuck_output(&dial_rpm_pid, motors->dial.real.current,
-                                 cur_dial_rpm, set_dial_rpm);
+                                 cur_dial_rpm, -set_dial_rpm);
   }
   // 摩擦轮闭环
   float zero_number = 0;
@@ -349,17 +349,18 @@ HAL_StatusTypeDef shooter17_ctrl_loop(float dt, robot_t *robot) {
 
   if (robot->robot_control_flag) {
     LOAD_MOTOR_TFF(motors->dial, dial_tff);
+		motors->dial.AUX.EN = true;
     if (motors->L_fric.work_mode == MIT_TT ||
         motors->L_fric.work_mode == QUAD_CURR)
       LOAD_MOTOR_TFF(motors->L_fric, fric_tff[LEFT]);
     else {
-      LOAD_MOTOR_VDES(motors->L_fric, -set_fric_rpm / 60.f * 2 * PI);
+      LOAD_MOTOR_VDES(motors->L_fric, set_fric_rpm / 60.f * 2 * PI);
     }
     if (motors->R_fric.work_mode == MIT_TT ||
         motors->R_fric.work_mode == QUAD_CURR)
       LOAD_MOTOR_TFF(motors->R_fric, fric_tff[RIGHT]);
     else {
-      LOAD_MOTOR_VDES(motors->R_fric, set_fric_rpm / 60.f * 2 * PI);
+      LOAD_MOTOR_VDES(motors->R_fric, -set_fric_rpm / 60.f * 2 * PI);
     }
     motors->R_fric.AUX.EN = true;
     motors->L_fric.AUX.EN = true;

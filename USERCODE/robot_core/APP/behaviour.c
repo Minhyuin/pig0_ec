@@ -26,8 +26,8 @@ extern robot_state_t expected_state, current_state;
 extern imu_data_t gimbal_imu_data;
 extern imu_data_t chassis_imu_data;
 
-uint16_t magezine_on_pulse = 2500;
-uint16_t magezine_off_pulse = 1415;
+uint16_t magezine_off_pulse = 52;
+uint16_t magezine_on_pulse = 28;
 #define COVER_WORK_MAXTIM 250
 
 uint8_t rc_sc;
@@ -118,6 +118,10 @@ static void select_control_flag(rc_ctrl_t *rc_recv, robot_t *robot) {
         rc_recv->rc.switch_right == RC_SW_DOWN || is_rc_offline()) { // 断控
       robot->robot_control_flag = DISABLE;
       robot->keyboard_flag = DISABLE;
+      if (rc_recv->rc.switch_left == RC_SW_DOWN)
+        robot->magazine_switch_flag = MAG_OFF;
+      else
+        robot->magazine_switch_flag = MAG_ON;
     } else {
       if (robot->robot_survival_flag)
         robot->robot_control_flag = ENABLE;
@@ -399,7 +403,7 @@ static void update_robot_status_for_keyboard(rc_ctrl_t *rc_recv,
 static void update_robot_status_for_remoteControl(rc_ctrl_t *rc_recv,
                                                   robot_t *robot) {
   asr_cmds_t *asr = get_asr_cmds();
-  robot->magazine_switch_flag = MAG_OFF; // 遥控器下不断控关闭弹舱盖
+  // robot->magazine_switch_flag = MAG_OFF; // 遥控器下不断控关闭弹舱盖
   // robot->magazine_switch_flag = MAG_ON; // debug
   // 获取输入值
   rocker_rx += CLAMP((float)rc_recv->rc.ch1 * T_ACC_CNT / 660.0f - rocker_rx,
@@ -635,29 +639,34 @@ void behaviour_ctrl_loop(rc_ctrl_t *rc_recv, robot_t *robot) {
  *      @arg MAG_ON:开弹
  * @retval None
  */
+uint8_t cover_control_time = COVER_WORK_MAXTIM;
 void magazine_ctrl_loop(enum _magazine_switch_flag s_flag) {
-  static uint8_t cover_control_time = COVER_WORK_MAXTIM;
+  // static uint8_t cover_control_time = COVER_WORK_MAXTIM;
   if (s_flag == MAG_OFF) {
-    if (cover_control_time) {
-      cover_control_time--;
-      if (cover_control_time < 110) {
-        __HAL_TIM_SetCompare(&MAGAZINE_TIM_HANDLE, MAGAZINE_TIM_CHANNAL,
-                             magezine_off_pulse);
-      } else if (cover_control_time < 160) {
-        __HAL_TIM_SetCompare(&MAGAZINE_TIM_HANDLE, MAGAZINE_TIM_CHANNAL,
-                             magezine_on_pulse);
-      } else {
-        __HAL_TIM_SetCompare(&MAGAZINE_TIM_HANDLE, MAGAZINE_TIM_CHANNAL,
-                             magezine_off_pulse);
-      }
-    }
+    __HAL_TIM_SetAutoreload(&MAGAZINE_TIM_HANDLE, 1e4f / MAGAZINE_TIM_FREQ - 1);
+    //    if (cover_control_time) {
+    //      cover_control_time -= 3;
+    //      if (cover_control_time < 110) {
+    //        __HAL_TIM_SetCompare(&MAGAZINE_TIM_HANDLE, MAGAZINE_TIM_CHANNAL,
+    //                             magezine_off_pulse);
+    //      } else if (cover_control_time < 160) {
+    //        __HAL_TIM_SetCompare(&MAGAZINE_TIM_HANDLE, MAGAZINE_TIM_CHANNAL,
+    //                             magezine_on_pulse);
+    //      } else {
+    //        __HAL_TIM_SetCompare(&MAGAZINE_TIM_HANDLE, MAGAZINE_TIM_CHANNAL,
+    //                             magezine_off_pulse);
+    //      }
+    //    }
+    __HAL_TIM_SetCompare(&MAGAZINE_TIM_HANDLE, MAGAZINE_TIM_CHANNAL,
+                         magezine_off_pulse);
   } else if (s_flag == MAG_ON) {
+    __HAL_TIM_SetAutoreload(&MAGAZINE_TIM_HANDLE, 1e4f / MAGAZINE_TIM_FREQ - 1);
     __HAL_TIM_SetCompare(&MAGAZINE_TIM_HANDLE, MAGAZINE_TIM_CHANNAL,
                          magezine_on_pulse);
-    cover_control_time = COVER_WORK_MAXTIM;
   } else {
-    __HAL_TIM_SetCompare(&MAGAZINE_TIM_HANDLE, MAGAZINE_TIM_CHANNAL, 0);
-    cover_control_time = COVER_WORK_MAXTIM;
+    //    __HAL_TIM_SetCompare(&MAGAZINE_TIM_HANDLE, MAGAZINE_TIM_CHANNAL, 0);
+    //    cover_control_time = COVER_WORK_MAXTIM;
+    __HAL_TIM_SetAutoreload(&MAGAZINE_TIM_HANDLE, 1e4f);
   }
 }
 
