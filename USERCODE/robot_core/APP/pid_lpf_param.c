@@ -214,9 +214,9 @@ const pid_struct_t shoot_right_fric_pid_init_val = {
 };
 
 const pid_struct_t dial_rpm_pid_init_val = {
-    .kp = 0.007f,
+    .kp = 0.01f,
     .ki = 0.0f,
-    .kd = 0.0000005f,
+    .kd = 0.000001f,
     .i_max = 0.018f,
     .out_max = Kn_M2006 * C610_CURR_MAX,
     .k_deadband = 0.0f,

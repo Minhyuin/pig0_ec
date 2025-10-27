@@ -15,12 +15,12 @@
 #define D_FRIC 0.06f // m
 #define C_FRIC (D_FRIC * PI)
 
-#define DIAL_RR (5.f / 2.f)
+#define DIAL_RR (1.f)
 
 #define STUCK_MAX_TIME_CNT 35
 #define SINGLE_STUCK_MAX_TIME_CNT 10
-#define STUCK_SPEED 5
-#define STUCK_CURRENT 2.0f        // 安
+#define STUCK_SPEED 1
+#define STUCK_CURRENT 3.0f        // 安
 #define STUCK_RESTORE_RPM_INV -80 // 卡弹恢复的反转速度
 #define STUCK_RESTORE_RPM -20     // 卡弹恢复的正转速度
 #define STUCK_REVERSE_TIME_CNT 500
@@ -33,7 +33,7 @@
 #define C_PUSHER_DIAL (0.08f * PI)
 
 #define DIAL_RPM 135.f // 135 20Hz
-#define DIAL_LOW_RPM 40.f
+#define DIAL_LOW_RPM 120.f
 
 // 临桂县15℃ 6000为18m/s
 // 临桂县15℃ 6800为23m/s
@@ -42,7 +42,7 @@
 // 临桂县25℃ 6150为25m/s
 // 临桂县25℃ 6000为23m/s
 // 临桂县23℃ 6400为22m/s
-#define FRIC_RPM 6000
+#define FRIC_RPM 6000.f
 // (DEFAULT_SHOOT_SPEED / C_FRIC * 60.f) // 不带减速箱的rpm
 #define FRIC_TEST_RPM 2000.f
 
